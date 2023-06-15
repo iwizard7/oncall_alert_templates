@@ -5,7 +5,10 @@ Title
 Message
 =====
 {% if "firing" in payload.status %}
-*Status*: {{ payload.status }}🔴
+*Status*: Firing 🔥
+{% endif %}
+{% if "resolved" in payload.status %}
+*Status*:Resolved ✅
 {% endif %}
 Alertname: {{ payload.alerts[0].labels.alertname -}}
 

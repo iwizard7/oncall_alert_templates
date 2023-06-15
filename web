@@ -1,0 +1,28 @@
+Title
+=====
+*#{{ grafana_oncall_incident_id }} Incident* 
+
+Message
+=====
+{% if "firing" in payload.status %}
+*Status*: {{ payload.status }}🔴
+{% endif %}
+Alertname: {{ payload.alerts[0].labels.alertname -}}
+
+{%- if "alerts" in payload %}
+Nodename: {{ payload.alerts[0].labels.nodename }}
+{% endif -%}
+{%- if "alerts" in payload -%}
+IP: {{ payload.alerts[0].labels.instance }}
+{% endif -%}
+{%- if "valueString" in payload.alerts[0] -%}
+*Metrics*:
+{{ payload.alerts[0].valueString | regex_replace(".*?__name__=([\w\.]+).*?value=(\d+).*", "Последнее значение \\1: \\2 ") }}
+{% endif -%}
+-----------------------------
+raw message:
+{{ payload.alerts[0].valueString }}
+
+Image Url
+=====
+{{ payload.alerts[0].imageURL }}
